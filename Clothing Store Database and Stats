@@ -1,0 +1,39 @@
+--Create a clothing store database for tops in inventory.
+
+CREATE TABLE tops (id Integer primary key, name TEXT, price integer, color text, fabric text, quantity integer);
+
+INSERT INTO tops VALUES (1, "v-neck", 10, "red", "wool", 5);
+INSERT INTO tops VALUES (2, "turtleneck", 12, "blue", "wool", 6);
+INSERT INTO tops VALUES (3, "boatneck", 14, "pink", "silk", 6);
+INSERT INTO tops VALUES (4, "v-neck", 15, "black", "rayon", 8);
+INSERT INTO tops VALUES (5, "cowl neck", 13, "beige", "cotton", 7);
+INSERT INTO tops VALUES (6, "cardigan", 15, "red", "polyester", 5);
+INSERT INTO tops VALUES (7, "turtleneck", 16, "gray", "wool", 4);
+INSERT INTO tops VALUES (8, "tunic", 10, "black", "cotton", 7);
+INSERT INTO tops VALUES (9, "pullover", 12, "pink", "rayon", 6);
+INSERT INTO tops VALUES (10, "boatneck", 16, "blue", "polyester", 8);
+INSERT INTO tops VALUES (11, "tunic", 13, "gray", "cotton", 9);
+INSERT INTO tops VALUES (12, "cardigan", 14, "orange", "wool", 5);
+INSERT INTO tops VALUES (13, "pullover", 10, "yellow", "cotton", 7);
+INSERT INTO tops VALUES (14, "button_down", 12, "white", "polyester blend", 7);
+INSERT INTO tops VALUES (15, "tunic", 14, "purple", "wool", 5);
+
+--Display the database ordered by price.
+SELECT *FROM tops ORDER BY price asc;
+
+--How many total tops are in the store's inventory?
+SELECT SUM(QUANTITY) FROM TOPS;
+
+--Which tops have 7 or more quantities available in inventory?
+SELECT * FROM TOPS WHERE QUANTITY >= 7 ORDER BY QUANTITY ASC;
+
+--What types of tops and colors are available in the store's inventory?
+SELECT NAME, COLOR FROM TOPS;
+
+
+
+
+
+
+
+
