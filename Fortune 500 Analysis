@@ -1,3 +1,5 @@
+# This analysis utilized the following Fortune 500 dataset:
+
 CREATE TABLE fortune_companies (
     company_id INTEGER PRIMARY KEY,
     company_name TEXT,
@@ -56,9 +58,11 @@ VALUES
     ('Company JJ', 'Manufacturing', 370.0, 3100, 1, 20, 12, 7.6),
     ('Company KK', 'Healthcare', 150.2, 3400, 0, 16, 8, 5.3);
 
+# Select all data to become familiar with it.
 SELECT * 
 FROM fortune_companies;
 
+# Assign all the companies a size based on the number of employees.
 SELECT company_name, employees,
 CASE WHEN employees > 1000000 THEN "Extra Large"
 WHEN employees > 100000 THEN "Large"
@@ -68,46 +72,56 @@ END AS company_size
 FROM fortune_companies
 ORDER BY company_size;
 
+# Which industries, on average, offer employees more than 20 days of PTO?
 SELECT industry, ROUND(AVG(paid_time_off_days),1) AS avg_PTO
 FROM fortune_companies
 GROUP BY industry
 HAVING avg_PTO >20;
 
+# Which industries have an average employee tenure of more than 6 years?
 SELECT industry, AVG(avg_employee_tenure) AS avg_tenure
 FROM fortune_companies
 GROUP BY industry
 HAVING avg_tenure >6;
 
+# Display the companies and their average employee tenure that offer healthcare benefits and at least 22 days of PTO.
 SELECT company_name, avg_employee_tenure
 FROM fortune_companies
 WHERE healthcare_benefits = 1
 AND paid_time_off_days >=22;
 
+# Display the companies and their average employee tenure that provide at least 22 days of PTO and at least 12 weeks of maternity leave.
 SELECT company_name, avg_employee_tenure
 FROM fortune_companies
 WHERE paid_time_off_days >=22
 OR maternity_leave_weeks >=12
 ORDER BY avg_employee_tenure DESC;
 
+# Which company has the highest employee tenure?
 SELECT company_name, max(avg_employee_tenure)
 FROM fortune_companies;
 
+# Which company has the lowest employee tenure?
 SELECT company_name, min(avg_employee_tenure)
 FROM fortune_companies;
 
+# What is the average PTO given across each industry?
 SELECT industry, AVG(paid_time_off_days) as avg_PTO
 FROM fortune_companies
 GROUP BY industry;
 
+# How many companies have 2000 or fewer employees and do at least $200 billion in revenue?
 SELECT COUNT(*)
 FROM fortune_companies
 WHERE employees <= 2000
 AND revenue >= 200;
 
+# What is the total revenue of the companies in each industry?
 SELECT industry, SUM(revenue) as total_revenue
 FROM fortune_companies
 GROUP BY industry;
 
+# Display all of the companies in the technology, healthcare, and manufacturing industries.
 SELECT *
 FROM fortune_companies
 WHERE industry IN ("Technology", "Healthcare", "Manufacturing");
