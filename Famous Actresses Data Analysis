@@ -1,0 +1,105 @@
+# I created these three tables to analyze data about famous actresses:
+
+CREATE TABLE Actresses
+(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, age INTEGER);
+
+INSERT INTO actresses (name, age) VALUES ("Halle Berry", "57");
+INSERT INTO actresses (name, age) VALUES ("Reese Witherspoon", "47");
+INSERT INTO actresses (name, age) VALUES ("Eva Longoria", "48");
+INSERT INTO actresses (name, age) VALUES ("Jennifer Aniston", "54");
+INSERT INTO actresses (name, age) VALUES ("Charlize Theron", "48");
+INSERT INTO actresses (name, age) VALUES ("Sofia Vergara", "51");
+INSERT INTO actresses (name, age) VALUES ("Salma Hayek", "57");
+INSERT INTO actresses (name, age) VALUES ("Cameron Diaz", "51");
+INSERT INTO actresses (name, age) VALUES ("Gabrielle Union", "50");
+INSERT INTO actresses (name, age) VALUES ("Kate Winslet", "47");
+INSERT INTO actresses (name, age) VALUES ("Sandra Bullock", "59");
+INSERT INTO actresses (name, age) VALUES ("Angelina Jolie", "48");
+INSERT INTO actresses (name, age) VALUES ("Kristen Bell", "43");
+INSERT INTO actresses (name, age) VALUES ("Jennifer Lopez", "54");
+INSERT INTO actresses (name, age) VALUES ("Gwyneth Paltrow", "50");
+
+CREATE TABLE movies
+(id INTEGER PRIMARY KEY AUTOINCREMENT, person_id INTEGER, film TEXT);
+
+INSERT INTO movies (person_id, film) VALUES ("1", "Catwoman");
+INSERT INTO movies (person_id, film) VALUES ("2", "Sweet Home Alabama");
+INSERT INTO movies (person_id, film) VALUES ("3", "The Sentinel");
+INSERT INTO movies (person_id, film) VALUES ("4", "Picture Perfect");
+INSERT INTO movies (person_id, film) VALUES ("5", "Tully");
+INSERT INTO movies (person_id, film) VALUES ("6", "Bent");
+INSERT INTO movies (person_id, film) VALUES ("7", "Puss in Boots");
+INSERT INTO movies (person_id, film) VALUES ("8", "There's Something About Mary");
+INSERT INTO movies (person_id, film) VALUES ("9", "Bring It On");
+INSERT INTO movies (person_id, film) VALUES ("10", "Titanic");
+INSERT INTO movies (person_id, film) VALUES ("11", "Speed");
+INSERT INTO movies (person_id, film) VALUES ("12", "Maleficent");
+INSERT INTO movies (person_id, film) VALUES ("13", "Couples Retreat");
+INSERT INTO movies (person_id, film) VALUES ("14", "Selena");
+INSERT INTO movies (person_id, film) VALUES ("15", "Iron Man");
+
+CREATE TABLE Partners
+(id INTEGER PRIMARY KEY AUTOINCREMENT, person_id INTEGER, sig_other "text");
+
+INSERT INTO partners (person_id, sig_other) VALUES ("1", "Van Hunt");
+INSERT INTO partners (person_id, sig_other) VALUES ("2", "Jim Toth");
+INSERT INTO partners (person_id, sig_other) VALUES ("3", "Jose Baston");
+INSERT INTO partners (person_id, sig_other) VALUES ("4", "Null");
+INSERT INTO partners (person_id, sig_other) VALUES ("5", "Alex Dimitrijevic");
+INSERT INTO partners (person_id, sig_other) VALUES ("6", "Joe Manganiello");
+INSERT INTO partners (person_id, sig_other) VALUES ("7", "Francois-Henri Pinault");
+INSERT INTO partners (person_id, sig_other) VALUES ("8", "Benji Madden");
+INSERT INTO partners (person_id, sig_other) VALUES ("9", "Dwyane Wade");
+INSERT INTO partners (person_id, sig_other) VALUES ("10", "Edward Abel Smith");
+INSERT INTO partners (person_id, sig_other) VALUES ("11", "Jesse James");
+INSERT INTO partners (person_id, sig_other) VALUES ("12", "Null");
+INSERT INTO partners (person_id, sig_other) VALUES ("13", "Dax Shepard");
+INSERT INTO partners (person_id, sig_other) VALUES ("14", "Ben Affleck");
+INSERT INTO partners (person_id, sig_other) VALUES ("15", "Brad Falchuk");
+
+# Display names and ages of actresses.
+SELECT  name, age FROM actresses;
+
+# Display actresses and the movies they starred in.
+SELECT a.name, m.film
+FROM actresses a
+JOIN movies m
+ON a.id = m.person_id;
+
+# Display actresses' names, movies, and partners.
+SELECT a.name, m.film, p.sig_other AS partner
+FROM actresses a
+Join movies m
+on a.id = m.person_id
+JOIN partners p
+ON a.id = p.person_id;
+
+# Which actresses are under 50 years old?
+SELECT name, age
+FROM actresses
+WHERE age <50
+ORDER BY age;
+
+# Which actresses are 50 years old or older?
+SELECT name, age
+FROM actresses 
+where age >=50
+ORDER BY age;
+
+# Display the significant other of the actress that starred in each movie.
+SELECT film, sig_other 
+FROM movies
+JOIN partners
+ON movies.person_id =  partners.person_id;
+
+
+
+
+
+
+
+
+
+
+
+
