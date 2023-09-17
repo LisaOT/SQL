@@ -41,8 +41,6 @@ SELECT distinct Product, price
 FROM BIT_DB.JanSales
 WHERE price in (SELECT min(price) FROM BIT_DB.JanSales);
 
-SELECT * FROM BIT_DB.JanSales LIMIT 1;
-
 #5 What is the total revenue for each product sold in January?
 
 SELECT product, sum(quantity)*price as total_revenue
@@ -52,7 +50,7 @@ GROUP BY product;
 SELECT * FROM BIT_DB.FebSales LIMIT 1;
 SELECT * FROM BIT_DB.customers;
 
-#6 which products were sold in February at 548 Lincoln St, Seattle, WA 98101, how many of each were sold, and what was the total revenue?
+#6 Which products were sold in February at 548 Lincoln St, Seattle, WA 98101, how many of each were sold, and what was the total revenue?
 
 SELECT sum(quantity), product, sum(quantity)* price as revenue
 FROM BIT_DB.FebSales
@@ -76,4 +74,49 @@ SELECT product, SUM(quantity)
 FROM BIT_DB.FebSales
 WHERE location like '%Los Angeles%'
 GROUP BY product;
+
+#9 Which locations in New York received at least 3 orders in January, and how many orders did they each receive?
+
+SELECT distinct location, COUNT(orderID)
+FROM BIT_DB.JanSales
+WHERE location like '%NY%'
+AND length(orderid)=6
+AND orderid <> 'Order ID'
+GROUP BY location
+HAVING COUNT(orderID)>2;
+
+#10  How many of each type of headphone were sold in February?
+
+SELECT product, sum(quantity) as quantity
+FROM BIT_DB.FebSales
+WHERE product like '%headphone%'
+GROUP BY product;
+
+
+#11 What was the average amount spent per account in February?
+
+SELECT ROUND(SUM(quantity*price) / COUNT(acctnum)) as avg_spent
+FROM BIT_DB.FebSales feb
+LEFT JOIN BIT_DB.customers cust
+ON feb.orderID=cust.order_id
+WHERE length(orderid) = 6 
+AND orderid <> 'Order ID';
+
+#12 What was the average quantity of products purchased per account in February?
+
+SELECT SUM(quantity)/COUNT(acctnum)
+FROM BIT_DB.FebSales feb
+LEFT JOIN BIT_DB.customers cust
+ON feb.orderid = cust.order_id
+WHERE length(orderid) = 6
+AND orderid <> 'Order ID';
+
+#13 Which product brought in the most revenue in January, and how much revenue did it bring in total?
+
+SELECT distinct product, round(SUM(quantity*price)) as revenue
+FROM BIT_DB.JanSales
+GROUP BY product
+ORDER BY revenue desc
+LIMIT 1;
+
 
