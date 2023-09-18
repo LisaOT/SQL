@@ -1,3 +1,5 @@
+# I used this table from Kaggle to explore data about NASA astronauts:
+
 /* Source:
   https://www.kaggle.com/nasa/astronaut-yearbook
 */
@@ -380,56 +382,128 @@ INSERT INTO astronauts(Name,Year,GroupNum,Status,Birth_Date,Birth_Place,Gender,A
 INSERT INTO astronauts(Name,Year,GroupNum,Status,Birth_Date,Birth_Place,Gender,Alma_Mater,Undergraduate_Major,Graduate_Major,Military_Rank,Military_Branch,Space_Flights,Space_Flight_hr,Space_Walks,Space_Walks_hr,Missions,Death_Date,Death_Mission) VALUES ('John W. Young',1962,2,'Retired','9/24/1930','San Francisco, CA','Male','Georgia Institute of Technology','Aeronautical Engineering',NULL,'Captain','US Navy (Retired)',6,835,3,20,'Gemini 3, Gemini 10, Apollo 10, Apollo 16, STS-1 (Columbia), STS-9 (Columbia)',NULL,NULL);
 INSERT INTO astronauts(Name,Year,GroupNum,Status,Birth_Date,Birth_Place,Gender,Alma_Mater,Undergraduate_Major,Graduate_Major,Military_Rank,Military_Branch,Space_Flights,Space_Flight_hr,Space_Walks,Space_Walks_hr,Missions,Death_Date,Death_Mission) VALUES ('George D. Zamka',1998,17,'Retired','6/29/1962','Jersey City, NJ','Male','US Naval Academy; Florida Institute of Technology','Mathematics','Engineering Management','Colonel','US Marine Corps (Retired)',2,692,0,0,'STS-120 (Discovery), STS-130 (Endeavor)',NULL,NULL);
 
-SELECT name, space_flights FROM astronauts WHERE space_flights > 3 ORDER BY space_flights;
+#The following is the SQL I wrote to explore this dataset:
 
-SELECT AVG(space_flights) as "average space flights", MIN(space_flights) as "min space flights", max (space_flights) as "max space flights" FROM astronauts;
+#1 Which astronauts had more than 3 space flights?
 
-SELECT AVG(space_walks_hr) as "avg space walk hours", min(space_walks_hr) as "min space walk hours", max (space_walks_hr) as "max space walk hours" from astronauts;
+SELECT name, space_flights 
+FROM astronauts 
+WHERE space_flights > 3 
+ORDER BY space_flights;
 
-SELECT AVG(space_walks) as "avg space walks", min(space_walks) as "min space walks", max(space_walks) as "max space walks" from astronauts;
+#2 What were the average space flights, lowest number of space flights, and the highest number of space flights by the astronauts?
 
-Select name, space_walks FROM astronauts WHERE space_walks >=6 order by space_walks;
+SELECT AVG(space_flights) as "average space flights", MIN(space_flights) as "min space flights", max (space_flights) as "max space flights" 
+FROM astronauts;
 
-SELECT undergraduate_major, COUNT(*)FROM astronauts GROUP BY UNDERGRADUATE_MAJOR;
+#3 What were the average space walk hours, lowest number of space walk hours, and highest number of space walk hours by the astronauts?
 
-SELECT count(space_walks) as "total space_walks" FROM ASTRONAUTS; 
+SELECT AVG(space_walks_hr) as "avg space walk hours", min(space_walks_hr) as "min space walk hours", max (space_walks_hr) as "max space walk hours" 
+FROM astronauts;
 
-SELECT name, year FROM astronauts WHERE year <=1965 order by year;
+#4 What were the average space walks, lowest number of space walks, and highest number of space walks by the astronauts?
 
-SELECT name, sum(space_walks) as "Total Space Walks" from astronauts GROUP BY NAME HAVING "total space walks" >6 order by "total space walks"; 
+SELECT AVG(space_walks) as "avg space walks", min(space_walks) as "min space walks", max(space_walks) as "max space walks" 
+FROM astronauts;
+
+#5 Which astronauts had 6 or more space walks?
+
+Select name, space_walks 
+FROM astronauts 
+WHERE space_walks >=6 
+ORDER BY space_walks;
+
+#6 Display the number of each different undergraduate major the astronauts had.
+
+SELECT undergraduate_major, COUNT(*)
+FROM astronauts 
+GROUP BY UNDERGRADUATE_MAJOR;
+
+#7 How many total space walks did all the astronauts have together?
+
+SELECT count(space_walks) as "total space_walks" 
+FROM ASTRONAUTS; 
+
+#8 Who were the astronauts in 1965 or earlier?
+
+SELECT name, year 
+FROM astronauts 
+WHERE year <=1965 
+ORDER BY year;
+
+#9 Which astronauts had more than 6 space walks?
+
+SELECT name, sum(space_walks) as "Total Space Walks" 
+FROM astronauts 
+GROUP BY NAME 
+HAVING "total space walks" >6 
+ORDER BY "total space walks"; 
+
+# 10 Based on the number of space walks, characterize each astronaut's experience as experienced, intermediate, or novice.
 
 SELECT name, space_walks,
 CASE 
 WHEN space_walks >=8 THEN "EXPERIENCED"
 WHEN space_walks >=4 THEN "INTERMEDIATE"
 WHEN space_walks >=1 then "NOVICE"
-ELSE "UNEXPERIENCED"
-END AS "Level of Experience" FROM ASTRONAUTS ORDER BY space_walks;
+ELSE "NONE"
+END AS "Level of Experience" 
+FROM ASTRONAUTS 
+ORDER BY space_walks;
 
+# 11 Which astronauts had more than 5 space flights and space walks?
 
-SELECT name, space_flights, space_walks FROM astronauts where space_flights >5 and space_walks >5;
+SELECT name, space_flights, space_walks 
+FROM astronauts 
+WHERE space_flights >5 
+AND space_walks >5;
 
-SELECT name, space_flights, space_walks FROM ASTRONAUTS WHERE space_flights >7 or space_walks >7;
- 
-SELECT name, space_walks, year FROM astronauts WHERE space_walks >2 and year < 1965;
+# 12 Which astronauts had more than 7 space walks or more than 7 space flights?
 
-SELECT name, space_walks_hr, year FROM astronauts WHERE space_walks_hr >50 and year >1990;
+SELECT name, space_flights, space_walks 
+FROM ASTRONAUTS 
+WHERE space_flights >7 
+OR space_walks >7;
+
+# 13 Which astronauts had more than 2 space walks before the year 1965?
+
+SELECT name, space_walks, year 
+FROM astronauts 
+WHERE space_walks >2 
+AND year < 1965;
+
+# 14 Which astronauts had over 50 space walk hours after the year 1990?
+
+SELECT name, space_walks_hr, year 
+FROM astronauts 
+WHERE space_walks_hr >50 
+AND year >1990;
+
+#15 Which astronauts were either active or retired Army?
 
 SELECT NAME, "Military_Branch"
 FROM ASTRONAUTS
 WHERE "military_branch" LIKE "%US Army%";
 
+# 16 Which astronauts were either active or retired Air Force?
+
 SELECT NAME, "Military_Branch"
 FROM ASTRONAUTS
 WHERE "military_branch" LIKE "%US AIR fORCE%";
+
+# 17 Which astronauts were either active or retired Navy?
 
 SELECT NAME, "Military_Branch"
 FROM ASTRONAUTS
 WHERE "military_branch" LIKE "%US NAVY%";
 
+# 18 Which astronauts were either active or retire Marine Corps?
+
 SELECT NAME, "Military_Branch"
 FROM ASTRONAUTS
 WHERE "military_branch" LIKE "%US MARINE CORPS%";
+
+# 19 How many astronauts were in each of the 4 branches of the Armed Forces?  How many were not in the Armed Forces?
 
 SELECT COUNT (*),
 CASE
@@ -437,9 +511,9 @@ WHEN MILITARY_BRANCH LIKE "%US Marine Corps%" Then "Marines"
 When military_branch Like "%US Navy%" THEN "Navy"
 When military_branch LIKE "%US Air Force%" Then "Air Force"
 When military_branch Like "%US Army%" then "Army"
-Else "Null"
-End as "Armed_Forces" 
-From astronauts
-Group by "Armed_Forces";
+ELSE "Null"
+END AS "Armed_Forces" 
+FROM astronauts
+GROUP BY "Armed_Forces";
 
 
