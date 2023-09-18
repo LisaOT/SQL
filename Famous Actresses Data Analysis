@@ -1,4 +1,4 @@
-# I created these three tables to analyze data about famous actresses:
+# I created these three tables and entered the data to analyze data about famous actresses:
 
 CREATE TABLE Actresses
 (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, age INTEGER);
@@ -57,36 +57,43 @@ INSERT INTO partners (person_id, sig_other) VALUES ("13", "Dax Shepard");
 INSERT INTO partners (person_id, sig_other) VALUES ("14", "Ben Affleck");
 INSERT INTO partners (person_id, sig_other) VALUES ("15", "Brad Falchuk");
 
-# Display names and ages of actresses.
-SELECT  name, age FROM actresses;
+# 1 Display names and ages of actresses.
 
-# Display actresses and the movies they starred in.
+SELECT  name, age 
+FROM actresses;
+
+# 2 Display actresses and the movies they starred in.
+
 SELECT a.name, m.film
 FROM actresses a
 JOIN movies m
 ON a.id = m.person_id;
 
-# Display actresses' names, movies, and partners.
+# 3 Display actresses' names, movies, and partners.
+
 SELECT a.name, m.film, p.sig_other AS partner
 FROM actresses a
-Join movies m
-on a.id = m.person_id
+JOIN movies m
+ON a.id = m.person_id
 JOIN partners p
 ON a.id = p.person_id;
 
-# Which actresses are under 50 years old?
+# 4 Which actresses are under 50 years old?
+
 SELECT name, age
 FROM actresses
 WHERE age <50
 ORDER BY age;
 
-# Which actresses are 50 years old or older?
+# 5 Which actresses are 50 years old or older?
+
 SELECT name, age
 FROM actresses 
-where age >=50
+WHERE age >=50
 ORDER BY age;
 
-# Display the significant other of the actress that starred in each movie.
+# 6 Display the significant other of the actress that starred in each movie.
+
 SELECT film, sig_other 
 FROM movies
 JOIN partners
