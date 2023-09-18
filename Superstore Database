@@ -27,49 +27,58 @@ VALUES
     (14, 'Cutlery Set', 'Kitchen Supplies', 34.50, 40, 4.4),
     (15, 'Cozy Throw Blanket', 'Furnishings', 24.99, 100, 4.2);
 
---Display the items and order by price.
+# 1 Display the items and order by price.
+
 SELECT item_name, price
 FROM superstore
 ORDER BY price DESC;
 
---Show a statistic about the item prices-what is the highest price in the Superstore?
+# 2 What is the highest price in the Superstore?
+
 SELECT MAX(price)
 FROM superstore;
 
---Display all items and their prices in the Kitchen Supply category.
+# 3 Display all items and their prices in the Kitchen Supply category.
+
 SELECT item_name, price
 FROM superstore
 WHERE category= "Kitchen Supplies";
 
---Display the average rating of all the items in the electronics category.
+# 4 Display the average rating of all the items in the electronics category.
+
 SELECT category, AVG(average_rating)
 FROM superstore
 WHERE category= "Electronics";
 
---Display all items in the superstore and their ratings, order from highest to lowest rating.
+# 5 Display all items in the superstore and their ratings, order from highest to lowest rating.
+
 SELECT item_name, average_rating
 FROM superstore
 ORDER BY average_rating DESC;
 
---What is the most expensive item in the superstore?
+# 6 What is the most expensive item in the superstore?
+
 SELECT MAX(price), item_name
 FROM superstore;
 
---Count the number of items in the superstore that cost more than $100.00.
+# 7 Count the number of items in the superstore that cost more than $100.00.
 SELECT COUNT(price)
 FROM superstore
 WHERE price > 100.00;
 
---Display the name and price of the cheapest item in the superstore.
+# 8 Display the name and price of the cheapest item in the superstore.
+
 SELECT MIN(price), item_name
 FROM superstore;
 
---Display the items in the superstore that have more than 40 in stock.
+# 9 Display the items in the superstore that have more than 40 in stock.
+
 SELECT item_name, stock_quantity
 FROM superstore
 WHERE stock_quantity >40;
 
---Display the number of memory foam mattresses the superstore has in stock.
+# 10 Display the number of memory foam mattresses the superstore has in stock.
+
 SELECT stock_quantity, item_name
 FROM superstore
 WHERE item_name= "Memory Foam Mattress";
