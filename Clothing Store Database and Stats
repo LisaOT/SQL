@@ -1,4 +1,4 @@
---Create a clothing store database for tops in inventory.
+#  I created this table and entered the data as a simulated clothing store database.
 
 CREATE TABLE tops (id Integer primary key, name TEXT, price integer, color text, fabric text, quantity integer);
 
@@ -18,17 +18,87 @@ INSERT INTO tops VALUES (13, "pullover", 10, "yellow", "cotton", 7);
 INSERT INTO tops VALUES (14, "button_down", 12, "white", "polyester blend", 7);
 INSERT INTO tops VALUES (15, "tunic", 14, "purple", "wool", 5);
 
---Display the database ordered by price.
-SELECT *FROM tops ORDER BY price asc;
+## Below is the SQL I wrote to analyze the data from the table:
 
---How many total tops are in the store's inventory?
-SELECT SUM(QUANTITY) FROM TOPS;
+#1 Display all of the data about the clothing and order the inventory by price.
 
---Which tops have 7 or more quantities available in inventory?
-SELECT * FROM TOPS WHERE QUANTITY >= 7 ORDER BY QUANTITY ASC;
+SELECT *
+FROM tops 
+ORDER BY price asc;
 
---What types of tops and colors are available in the store's inventory?
-SELECT NAME, COLOR FROM TOPS;
+#2 Display the name, price, and fabric of the tops and categorize the items by regular price, sale price, and clearance price.
+
+SELECT name, price, fabric,
+CASE 
+WHEN price >=14 THEN 'Regular Price'
+WHEN price >=12 THEN 'Sale Price'
+ELSE 'Clearance'
+END AS Current_Promotion
+FROM tops
+ORDER BY price desc;
+
+#3 Display information about these specific tops (v-neck, pullover, tunic, and turtleneck) and display them alphabetically by name.
+
+SELECT name, fabric, price 
+FROM tops
+WHERE name 
+IN ('v-neck', 'pullover', 'tunic', 'turtleneck')
+ORDER BY name;
+
+#4 Which tops have 5 or more in stock and are priced above $14?
+
+SELECT name, price, quantity, fabric 
+FROM tops
+WHERE quantity >=5
+AND price >14;
+
+#5 What is the total inventory of tops in the store?
+
+SELECT SUM(QUANTITY) as total_inventory
+FROM TOPS;
+
+#6 Which tops have 7 or more in inventory?
+
+SELECT quantity, color, name
+FROM TOPS 
+WHERE QUANTITY >= 7 
+ORDER BY QUANTITY ASC;
+
+#7 Which tops are in stock in blue, and what are the prices?
+
+SELECT name, color, price
+FROM tops
+WHERE color='blue';
+
+#8 What is the average price of each top characterized by fabric?
+
+SELECT avg(price) as average_price, fabric
+FROM tops
+GROUP BY fabric
+HAVING avg(price) >=13;
+
+#9 How many different styles of tops are in stock in the store?
+
+SELECT COUNT(distinct name) as total_styles
+FROM tops;
+
+#10 Which top is the most expensive, and what is the fabric content?
+
+SELECT name, fabric, max(price)
+FROM tops;
+
+#11 Which top is the least expensive, and what is the fabric content?
+
+SELECT name, fabric, min(price)
+FROM tops;
+
+
+
+
+
+
+
+
 
 
 
