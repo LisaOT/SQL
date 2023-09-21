@@ -1,12 +1,20 @@
-SELECT * FROM chinook.customers limit 20;
+# This SQL Code was written based on a database called "Chinook," a digital media store which includes 11 tables for artists, albums, media tracks, invoices, and customers.
+
+# Here are the queries I wrote to analyze the data:
+
+#1 Show the customers who are not in the United States.
 
 SELECT customerID, FirstName, LastName, Country
 FROM chinook.customers
 WHERE country <> "USA";
 
+# 2 Show only the customers from Brazil.
+
 SELECT customerID, FirstName, LastName, Country
 FROM customers
 WHERE country = 'Brazil';
+
+# 3 Display the invoices for the customers from Brazil.  Include name, Invoice ID, Date of the invoice, and billing country.
 
 SELECT customers.FirstName, customers.LastName, invoices.InvoiceId, invoices.InvoiceDate, invoices.BillingCountry
 FROM customers
@@ -14,17 +22,18 @@ LEFT JOIN invoices
 ON customers.CustomerId=invoices.InvoiceId
 WHERE invoices.BillingCountry='Brazil';
 
+# 4 Display the employees who are sales agents.
 
 SELECT EmployeeId, LastName, FirstName, Title 
 FROM employees
 WHERE Title= "Sales Support Agent";
 
-SELECT * FROM invoices limit 5;
+# 5 Display a distinct list of billing countries.
 
 SELECT distinct BillingCountry
 FROM invoices; 
 
-SELECT * FROM employees limit 1;
+# 6 Show the invoices associated with each sales agent.  Include the agent's full name.
 
 SELECT employees.FirstName, employees.LastName, invoices.InvoiceId
 FROM employees
@@ -33,6 +42,8 @@ ON employees.EmployeeId= customers.SupportRepId
 JOIN invoices
 ON invoices.customerId=customers.CustomerId;
 
+# 7 Display the invoice total, customer name, country, and sales agent for all the invoices and customers.
+
 SELECT customers.FirstName, customers.LastName, customers.Country, invoices.Total, employees.LastName as 'Sales_Agent'
 FROM customers
 JOIN invoices
@@ -40,22 +51,27 @@ ON customers.CustomerId=invoices.CustomerId
 JOIN employees
 ON customers.SupportRepId= employees.EmployeeId;
 
-
-SELECT * FROM INVOICES LIMIT 1;
+#8 How many invoices were there in 2009?
 
 SELECT COUNT(invoiceID)
 FROM invoices
 WHERE InvoiceDate 
 BETWEEN '2009-01-01' AND '2009-12-31';
 
+# 9 What are the total sales for 2009?
+
 SELECT SUM(invoices.Total) as 'Total Sales'
 FROM invoices
 HAVING invoiceDate BETWEEN '2009-01-01' AND '2009-12-31';
+
+# 10 Display the purchased track name with each invoice line ID.
 
 SELECT tracks.Name, invoice_items.InvoiceLineId
 FROM tracks
 INNER JOIN invoice_items
 ON tracks.TrackId=invoice_items.TrackId;
+
+# 11 Display the purchased track name and artist name with each invoice line ID.
 
 SELECT tracks.Name, invoice_items.InvoiceLineId, artists.Name as artists
 FROM tracks
@@ -65,6 +81,8 @@ INNER JOIN ALBUMS
 ON tracks.AlbumId = albums.AlbumId
 LEFT JOIN artists
 ON albums.ArtistId= artists.ArtistId;
+
+# 12 Display all of the tracks and include the album name, media type, and genre.
 
 SELECT tracks.Name as 'Track_Name', albums.Title as 'Album_Name', media_types.Name as 'Media_Types', genres.Name as 'Genre'
 FROM tracks
@@ -76,6 +94,8 @@ JOIN genres
 ON tracks.GenreId= genres.GenreId
 ORDER BY track;
 
+# 13 Display the total sales made by each sales agent.
+
 SELECT employees.FirstName, employees.LastName, employees.Title, round(SUM(invoices.Total), 2) as 'Total_Sales'
 FROM employees
 JOIN customers
@@ -84,6 +104,8 @@ JOIN invoices
 ON invoices.CustomerId=customers.CustomerId
 WHERE employees.title='Sales Support Agent'
 GROUP BY employees.LastName;
+
+#14 Which sales agent made the most dollars in sales in 2009?
 
 SELECT employees.FirstName, employees.LastName, employees.Title, round(SUM(invoices.Total), 2) as 'Total_Sales'
 FROM employees
@@ -96,6 +118,8 @@ AND invoices.InvoiceDate Like '2009%'
 GROUP BY employees.FirstName
 ORDER BY 'Total_Sales' DESC; 
 
+#15 Display the number of each track sold. Include the track name, album name, and number sold.
+
 SELECT tracks.Name as 'Track_Name', sum(invoice_items.Quantity) as'Number_Sold', albums.Title as 'Album_Title'
 FROM tracks
 JOIN invoice_items
@@ -104,6 +128,8 @@ JOIN albums
 ON tracks.AlbumId = albums.AlbumId
 GROUP BY tracks.Name
 ORDER BY sum(invoice_items.quantity) desc;
+
+#16 What were the total sales for each media type sold?
 
 SELECT media_types.Name as 'Media_Type', ROUND(sum(invoices.Total), 2) as 'Total_Sales'
 FROM media_types
