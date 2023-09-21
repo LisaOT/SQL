@@ -1,0 +1,117 @@
+SELECT * FROM chinook.customers limit 20;
+
+SELECT customerID, FirstName, LastName, Country
+FROM chinook.customers
+WHERE country <> "USA";
+
+SELECT customerID, FirstName, LastName, Country
+FROM customers
+WHERE country = 'Brazil';
+
+SELECT customers.FirstName, customers.LastName, invoices.InvoiceId, invoices.InvoiceDate, invoices.BillingCountry
+FROM customers
+LEFT JOIN invoices
+ON customers.CustomerId=invoices.InvoiceId
+WHERE invoices.BillingCountry='Brazil';
+
+
+SELECT EmployeeId, LastName, FirstName, Title 
+FROM employees
+WHERE Title= "Sales Support Agent";
+
+SELECT * FROM invoices limit 5;
+
+SELECT distinct BillingCountry
+FROM invoices; 
+
+SELECT * FROM employees limit 1;
+
+SELECT employees.FirstName, employees.LastName, invoices.InvoiceId
+FROM employees
+JOIN customers
+ON employees.EmployeeId= customers.SupportRepId
+JOIN invoices
+ON invoices.customerId=customers.CustomerId;
+
+SELECT customers.FirstName, customers.LastName, customers.Country, invoices.Total, employees.LastName as 'Sales_Agent'
+FROM customers
+JOIN invoices
+ON customers.CustomerId=invoices.CustomerId
+JOIN employees
+ON customers.SupportRepId= employees.EmployeeId;
+
+
+SELECT * FROM INVOICES LIMIT 1;
+
+SELECT COUNT(invoiceID)
+FROM invoices
+WHERE InvoiceDate 
+BETWEEN '2009-01-01' AND '2009-12-31';
+
+SELECT SUM(invoices.Total) as 'Total Sales'
+FROM invoices
+HAVING invoiceDate BETWEEN '2009-01-01' AND '2009-12-31';
+
+SELECT tracks.Name, invoice_items.InvoiceLineId
+FROM tracks
+INNER JOIN invoice_items
+ON tracks.TrackId=invoice_items.TrackId;
+
+SELECT tracks.Name, invoice_items.InvoiceLineId, artists.Name as artists
+FROM tracks
+LEFT JOIN invoice_items
+ON tracks.TrackId=invoice_items.TrackId
+INNER JOIN ALBUMS
+ON tracks.AlbumId = albums.AlbumId
+LEFT JOIN artists
+ON albums.ArtistId= artists.ArtistId;
+
+SELECT tracks.Name as 'Track_Name', albums.Title as 'Album_Name', media_types.Name as 'Media_Types', genres.Name as 'Genre'
+FROM tracks
+JOIN albums
+ON tracks.AlbumId= albums.AlbumId
+JOIN media_types
+ON tracks.mediatypeID= media_types.MediaTypeId
+JOIN genres
+ON tracks.GenreId= genres.GenreId
+ORDER BY track;
+
+SELECT employees.FirstName, employees.LastName, employees.Title, round(SUM(invoices.Total), 2) as 'Total_Sales'
+FROM employees
+JOIN customers
+ON employees.EmployeeId=customers.SupportRepId
+JOIN invoices
+ON invoices.CustomerId=customers.CustomerId
+WHERE employees.title='Sales Support Agent'
+GROUP BY employees.LastName;
+
+SELECT employees.FirstName, employees.LastName, employees.Title, round(SUM(invoices.Total), 2) as 'Total_Sales'
+FROM employees
+JOIN customers
+ON employees.EmployeeId=customers.SupportRepId
+JOIN invoices
+ON invoices.CustomerId=customers.CustomerId
+WHERE employees.title='Sales Support Agent'
+AND invoices.InvoiceDate Like '2009%'
+GROUP BY employees.FirstName
+ORDER BY 'Total_Sales' DESC; 
+
+SELECT tracks.Name as 'Track_Name', sum(invoice_items.Quantity) as'Number_Sold', albums.Title as 'Album_Title'
+FROM tracks
+JOIN invoice_items
+ON tracks.TrackId=invoice_items.TrackId
+JOIN albums
+ON tracks.AlbumId = albums.AlbumId
+GROUP BY tracks.Name
+ORDER BY sum(invoice_items.quantity) desc;
+
+SELECT media_types.Name as 'Media_Type', ROUND(sum(invoices.Total), 2) as 'Total_Sales'
+FROM media_types
+JOIN tracks
+ON media_types.MediaTypeId = tracks.MediaTypeId
+JOIN invoice_items
+ON tracks.TrackId = invoice_items.TrackId
+JOIN invoices
+ON invoice_items.InvoiceId=invoices.InvoiceId
+GROUP BY media_types.Name
+ORDER BY SUM(invoices.Total) DESC;
